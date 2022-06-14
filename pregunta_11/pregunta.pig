@@ -42,6 +42,6 @@ ejercicio = LOAD 'data.csv' USING PigStorage(',')
             numer:chararray
     );
 
-sub_conjunto= FOREACH ejercicio GENERATE apellido , UCFIRST(apellido) AS mayuscula, LCFIRST(apellido) AS minuscula;
+sub_conjunto= FOREACH ejercicio GENERATE apellido , UPPER(apellido) AS mayuscula, LOWER(apellido) AS minuscula;
 data_ordenada= ORDER sub_conjunto BY apellido, mayuscula, minuscula asc;
 STORE data_ordenada INTO 'output' USING PigStorage(',');
