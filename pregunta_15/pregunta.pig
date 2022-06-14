@@ -31,4 +31,4 @@ ejercicio = LOAD 'data.csv' USING PigStorage(',')
 
 sub_conjunto= FOREACH ejercicio GENERATE nombre, color;
 filtro_B= FILTER sub_conjunto BY (nombre MATCHES '.*^[zZ].*') AND (color == 'blue');
-STORE filtro_B INTO 'output' USING PigStorage(',');
+STORE filtro_B INTO 'output' USING PigStorage(' ');
