@@ -33,4 +33,33 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
+ejercicio = LOAD 'data.csv' USING PigStorage(',') 
+    AS (
+            id: int,
+            nombre:chararray,
+            apellido:chararray,
+            fecha:chararray,
+            color:chararray,
+            numer:chararray
+    );
 
+sub_conjunto = FOREACH ejercicio GENERATE fecha, ToString(ToDate(fecha), 'MMM') AS nombre_mes, SUBSTRING(fecha,5,7) AS mes, GetMonth(ToDate(fecha)) AS nmes;
+STORE sub_conjunto INTO 'output' USING PigStorage(',');
+
+ejercicio = LOAD 'data.csv' USING PigStorage(',')  
+    AS ( 
+            id: int, 
+            nombre:chararray, 
+            apellido:chararray, 
+            fecha:chararray, 
+            color:chararray, 
+            numer:chararray 
+    ); 
+ 
+sub_conjunto = FOREACH ejercicio GENERATE fecha, LOWER(ToString(ToDate(fecha), 'MMM')) AS nombre_mes, SUBSTRING(fecha,5,7) AS mes, GetMonth(ToDate(fecha)) AS nmes;
+sub_conjunto = FOREACH sub_conjunto GENERATE fecha, REPLACE(nombre_mes, 'jan', 'ene') AS nombre_mes, mes, nmes;
+sub_conjunto = FOREACH sub_conjunto GENERATE fecha, REPLACE(nombre_mes, 'apr', 'abr') AS nombre_mes, mes, nmes;
+sub_conjunto = FOREACH sub_conjunto GENERATE fecha, REPLACE(nombre_mes, 'aug', 'ago') AS nombre_mes, mes, nmes;
+sub_conjunto = FOREACH sub_conjunto GENERATE fecha, REPLACE(nombre_mes, 'dec', 'dic') AS nombre_mes, mes, nmes;
+
+STORE sub_conjunto INTO 'output' USING PigStorage(',');
