@@ -22,4 +22,15 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
+ejercicio = LOAD 'data.csv' USING PigStorage(',') 
+    AS (
+            id: int,
+            nombre:chararray,
+            apellido:chararray,
+            fecha:chararray,
+            color:chararray,
+            numer:chararray
+    );
 
+sub_conjunto = FOREACH ejercicio GENERATE SUBSTRING(fecha,0,4) AS ano, SUBSTRING(fecha,2,4) AS ano2;
+STORE sub_conjunto INTO 'output' USING PigStorage(',');
